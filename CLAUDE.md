@@ -42,6 +42,8 @@ Hinweis: Auf GitHub Pages gibt es kein `window.claude` – der Fortschritt liegt
 | `app-lessons.js` | Lektionsansicht (`#t-<themen-id>`), Lernplan mit Start-Knöpfen, „Heute dran“ |
 | `data-quiz-ga.js` | Quizfragen GA1/GA2 `[Bereich, Frage, Optionen, [richtig], Erklärung]` |
 | `app-extra.js` | Prüfungsbereitschaft (Ziel 100 %), Lernserie/Kalender, Schwachstellen, Fortschritt übertragen, Suche, Hell/Dunkel (nur außerhalb Claude), Quiz-Ansicht (`#wiso`, alle Bereiche) |
+| `data-hardware.js` | Texte zu den 19 Bauteilen der 3D-Ansicht: `short`, `how`, `watch`, `exam`, `facts` (genau 3), `server`, `lesson`, `find` |
+| `app-hardware.js` | Hardware in 3D (`#hardware`): Szene mit three.js r128 (wird erst beim Öffnen von cdnjs nachgeladen, nicht per `<script src>`), Klick/Punkte → Erklärung, Explosionsansicht, Spiel „Bauteil finden“. Jedes Bauteil braucht eine Gruppe `grp("<id>")` |
 | `app-exam.js` | Probeprüfung (`#pruefung`): GA1/GA2 90 Min. mit Selbstbewertung, WiSo 60 Min. automatisch, Ergebnisliste |
 
 Lernaktionen immer mit `AP2.track()` vor `AP2.save()` zählen (Lernserie, Tagesziel). Der Nutzer will **100 % prüfungsbereit** werden – neue Funktionen sollen auf dieses Ziel einzahlen.

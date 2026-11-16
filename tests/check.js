@@ -71,6 +71,16 @@ function AP2GEN(g) { return A.GEN[g] && A.GEN[g].part; }
 // Prüfungsbereitschaft muss eine Zahl von 0 bis 100 liefern
 if (A.readiness) { const r = A.readiness(); if (!(r.pct >= 0 && r.pct <= 100) || r.parts.length !== 5) fail("Prüfungsbereitschaft", r.pct); } else fail("Prüfungsbereitschaft fehlt");
 
+// Hardware in 3D: jedes Bauteil braucht vollständige Texte und ein 3D-Modell
+const hwSrc = fs.readFileSync(path.join(dir, "app-hardware.js"), "utf8");
+if (!A.HW || A.HW.length < 15) fail("Hardware: zu wenige Bauteile");
+if (!A.views.hardware) fail("Hardware-Ansicht fehlt");
+(A.HW || []).forEach(p => {
+  if (!p.id || !p.name || !p.cat || !p.short || !p.how || !p.exam || !p.find || (p.watch || []).length < 3 || (p.facts || []).length !== 3) fail("Hardware-Bauteil unvollständig:", p.id);
+  if (p.lesson && !(A.LESSONS || {})[p.lesson]) fail("Hardware verweist auf unbekannte Lektion:", p.id, p.lesson);
+  if (!hwSrc.includes('grp("' + p.id + '"')) fail("Hardware: kein 3D-Modell für", p.id);
+});
+
 // GitHub Pages: index.html muss zum aktuellen ap2.html passen
 const pages = require("child_process").spawnSync(process.execPath, [path.join(dir, "tools", "build-pages.js"), "--check"], { encoding: "utf8" });
 if (pages.status !== 0) fail((pages.stdout || pages.stderr || "").trim() || "index.html veraltet");

@@ -124,6 +124,7 @@
         <div class="panel">
           <h3>Was du jetzt tun kannst</h3>
           <ul class="clean">
+            <li><a href="#hardware"><b>Hardware in 3D</b></a> – Mainboard, CPU, RAM, Steckplätze, Netzteil und Laufwerke zum Drehen und Anklicken, jedes Bauteil kurz erklärt.</li>
             <li><a href="#rechnen"><b>Rechen-Trainer</b></a> – Subnetting, IPv6, RAID, Verfügbarkeit, Übertragungszeit, WiSo-Rechnungen mit neuen Zahlen bei jedem Klick.</li>
             <li><a href="#karten"><b>Lernkarten</b></a> – ${AP2.CARDS.length} Karten mit Wiederholung nach dem Karteikasten-Prinzip.</li>
             <li><a href="#wiso"><b>WiSo-Quiz</b></a> – ${AP2.QUIZ.length} Fragen im IHK-Stil mit Erklärung.</li>

@@ -132,6 +132,7 @@
     index = [];
     AP2.ALL.forEach(t => { const L = AP2.LESSONS[t.id] || {}; index.push({ title: t.name, sub: t.part + " · Lektion", text: (t.name + " " + t.f.join(" ") + " " + strip(L.ex || "") + " " + (L.q ? L.q.f : "")).toLowerCase(), href: "#t-" + t.id }); });
     Object.entries(AP2.GEN).forEach(([id, g]) => index.push({ title: g.label, sub: g.part + " · Rechenaufgabe", text: (g.label + " " + strip(g.howto)).toLowerCase(), gen: id }));
+    (AP2.HW || []).forEach(p => index.push({ title: p.name, sub: "Hardware in 3D · " + p.cat, text: (p.name + " " + p.short + " " + p.how + " " + p.watch.join(" ") + " " + p.exam + " " + (p.server || "") + " " + p.facts.join(" ")).toLowerCase(), hw: p.id }));
     AP2.CARDS.forEach(c => index.push({ title: c[1], sub: c[0] + " · Lernkarte", text: (c[1] + " " + c[2]).toLowerCase(), ans: c[2] }));
   }
   function search(qs) {
@@ -146,7 +147,7 @@
       box.innerHTML = res.length ? res.map((x, i) => `<div class="sr" data-i="${i}"><div class="row small"><span class="muted">${esc(x.sub)}</span></div><b>${esc(x.title)}</b>${x.ans ? `<div class="sr-ans small" hidden>${esc(x.ans)}</div>` : ""}</div>`).join("") : `<div class="sr small muted">Nichts gefunden. Versuch einen anderen Begriff.</div>`;
       box.hidden = false;
       box.querySelectorAll(".sr[data-i]").forEach(d => d.addEventListener("click", () => { const x = res[+d.dataset.i];
-        if (x.href) { location.hash = x.href; close(); inp.value = ""; } else if (x.gen) { AP2.openTrainer(x.gen); close(); inp.value = ""; } else { const a = d.querySelector(".sr-ans"); if (a) a.hidden = !a.hidden; } }));
+        if (x.hw) { AP2.openHardware(x.hw); close(); inp.value = ""; } else if (x.href) { location.hash = x.href; close(); inp.value = ""; } else if (x.gen) { AP2.openTrainer(x.gen); close(); inp.value = ""; } else { const a = d.querySelector(".sr-ans"); if (a) a.hidden = !a.hidden; } }));
     };
     inp.addEventListener("input", show); inp.addEventListener("focus", show);
     inp.addEventListener("keydown", e => { if (e.key === "Escape") { close(); inp.blur(); } if (e.key === "Enter") { const f = box.querySelector(".sr[data-i]"); if (f) f.click(); } });
