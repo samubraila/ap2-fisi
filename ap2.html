@@ -212,6 +212,35 @@ textarea{background:var(--surface);border:1px solid var(--line);border-radius:8p
 .tcard.done{background:var(--good-soft);border-color:transparent}
 .tcard.started{border-color:var(--warn)}
 .tcard.exam{background:var(--surface2)}
+/* Suche */
+.search{position:relative;flex:1 1 260px;max-width:380px;min-width:0}
+.search input{width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:99px;padding:7px 14px;font-size:.9rem}
+.sres{position:absolute;top:calc(100% + 6px);left:0;right:0;min-width:min(92vw,360px);max-height:70vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:30;padding:4px}
+.sr{padding:8px 10px;border-radius:8px;cursor:pointer;display:grid;gap:2px}
+.sr:hover{background:var(--surface2)}
+.sr-ans{white-space:pre-line;padding-top:4px;color:var(--fg)}
+@media (max-width:640px){.brand{flex-wrap:wrap}.search{order:3;flex:1 1 100%;max-width:none}.sres{min-width:0}.exam-bar{top:calc(env(safe-area-inset-top,0px) + 142px)}}
+
+/* Prüfungsbereitschaft, Lernserie, Schwachstellen */
+.readiness{gap:16px;padding:18px}
+.ready-top{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.ready-parts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.rp{display:grid;gap:4px}
+ul.todo li{padding:8px 10px;border-radius:8px;background:var(--surface2)}
+.weak{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;background:var(--surface2)}
+svg .hm1{fill:var(--heat1)} svg .hm2{fill:var(--heat2)} svg .hm3{fill:var(--heat3)}
+svg .hm-today{stroke:var(--accent);stroke-width:2}
+
+/* Probeprüfung */
+.exam-pick{gap:10px}
+.exam-pick .btn{justify-self:start}
+.exam-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 96px);z-index:4;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.08)}
+.ex-timer{font-size:1.15rem}
+.ex-timer.low{color:var(--bad)}
+.exam-task{gap:14px}
+.exam-item{display:grid;gap:8px}
+.exam-task .exam-item+.exam-item{border-top:1px dashed var(--line);padding-top:12px}
+.exam-result{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:16px 18px;border-radius:14px;background:var(--accent-soft);border:1px solid var(--line)}
 a.btn{display:inline-block;text-decoration:none;color:inherit}
 a.btn.primary{color:var(--accent-ink)}
 details{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}
@@ -228,7 +257,8 @@ details summary{cursor:pointer;font-weight:600}
   <div class="wrap">
     <div class="brand">
       <a class="brand-l" href="#start"><span class="logo" aria-hidden="true">AP2</span><h1>Lernzentrale <span>FiSi</span></h1></a>
-      <span class="savechip" id="saveChip">Fortschritt: dieser Browser</span>
+      <div class="search" role="search"><input type="search" id="q" placeholder="Suchen: z. B. SLAAC, RAID 6, Probezeit" autocomplete="off" aria-label="In Lektionen, Karten und Aufgaben suchen"><div class="sres" id="sres" hidden></div></div>
+      <div class="row" style="gap:8px"><button type="button" class="btn sm" id="themeBtn" hidden>Design: Auto</button><span class="savechip" id="saveChip">Fortschritt: dieser Browser</span></div>
     </div>
     <nav class="tabs" id="tabs" aria-label="Bereiche">
       <a href="#start">Übersicht</a>
@@ -236,7 +266,8 @@ details summary{cursor:pointer;font-weight:600}
       <a href="#themen">Themen</a>
       <a href="#rechnen">Rechen-Trainer</a>
       <a href="#karten">Lernkarten</a>
-      <a href="#wiso">WiSo-Quiz</a>
+      <a href="#wiso">Quiz</a>
+      <a href="#pruefung">Probeprüfung</a>
       <a href="#noten">Notenrechner</a>
       <a href="#archiv">Archiv</a>
       <a href="#tipps">Tipps</a>
@@ -255,10 +286,12 @@ details summary{cursor:pointer;font-weight:600}
   <section class="view" data-view="plan" hidden></section>
   <section class="view" data-view="tipps" hidden></section>
   <section class="view" data-view="lektion" hidden></section>
+  <section class="view" data-view="pruefung" hidden></section>
 </main>
 
 <script src="data-topics.js"></script>
 <script src="data-cards.js"></script>
+<script src="data-quiz-ga.js"></script>
 <script src="app-core.js"></script>
 <script src="app-tools.js"></script>
 <script src="trainer-lib.js"></script>
@@ -273,3 +306,5 @@ details summary{cursor:pointer;font-weight:600}
 <script src="lessons-ga2b.js"></script>
 <script src="lessons-wiso.js"></script>
 <script src="app-lessons.js"></script>
+<script src="app-extra.js"></script>
+<script src="app-exam.js"></script>

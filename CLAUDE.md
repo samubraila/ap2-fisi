@@ -40,6 +40,11 @@ Hinweis: Auf GitHub Pages gibt es kein `window.claude` – der Fortschritt liegt
 | `diagram-lib.js` | Diagramm-Bausteine: `box`, `arrow`, `node`, `seq`, `stacks`, `flowH`, `org` |
 | `lessons-*.js` | 51 Lektionen: `ex`, `figs`, `q`, `kw`, `train`, `time` |
 | `app-lessons.js` | Lektionsansicht (`#t-<themen-id>`), Lernplan mit Start-Knöpfen, „Heute dran“ |
+| `data-quiz-ga.js` | Quizfragen GA1/GA2 `[Bereich, Frage, Optionen, [richtig], Erklärung]` |
+| `app-extra.js` | Prüfungsbereitschaft (Ziel 100 %), Lernserie/Kalender, Schwachstellen, Fortschritt übertragen, Suche, Hell/Dunkel (nur außerhalb Claude), Quiz-Ansicht (`#wiso`, alle Bereiche) |
+| `app-exam.js` | Probeprüfung (`#pruefung`): GA1/GA2 90 Min. mit Selbstbewertung, WiSo 60 Min. automatisch, Ergebnisliste |
+
+Lernaktionen immer mit `AP2.track()` vor `AP2.save()` zählen (Lernserie, Tagesziel). Der Nutzer will **100 % prüfungsbereit** werden – neue Funktionen sollen auf dieses Ziel einzahlen.
 | `tests/check.js` | Prüfskript ohne Browser (prüft auch, ob `index.html` aktuell ist) |
 | `tools/build-pages.js` | Baut `index.html` (vollständige Seite für GitHub Pages) aus `ap2.html` |
 | `index.html`, `.nojekyll` | Erzeugte Seite für GitHub Pages – nicht von Hand ändern |

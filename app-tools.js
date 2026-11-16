@@ -133,7 +133,7 @@
       </div>`;
     el.querySelectorAll("[data-cp]").forEach(b => b.addEventListener("click", () => { cardPart = b.dataset.cp; cardIdx = null; viewKarten(el); }));
     const next = () => { lastIdx = cardIdx; cardIdx = pickCard(); showAns = false; viewKarten(el); };
-    const rate = ok => { const s = AP2.state(); const id = "c" + cardIdx; const cur = s.cards[id] || { box: 1 }; s.cards[id] = { box: ok ? Math.min(5, (cur.box || 1) + 1) : 1 }; AP2.save(); next(); };
+    const rate = ok => { const s = AP2.state(); const id = "c" + cardIdx; const cur = s.cards[id] || { box: 1 }; s.cards[id] = { box: ok ? Math.min(5, (cur.box || 1) + 1) : 1 }; AP2.track(); AP2.save(); next(); };
     if ($("#k-show", el)) { $("#k-show", el).addEventListener("click", () => { showAns = true; viewKarten(el); }); $("#k-skip", el).addEventListener("click", next); }
     if ($("#k-yes", el)) { $("#k-yes", el).addEventListener("click", () => rate(true)); $("#k-no", el).addEventListener("click", () => rate(false)); }
   }

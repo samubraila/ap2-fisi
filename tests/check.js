@@ -53,10 +53,28 @@ if (A.evalAll) {
   if (A.evalAll({ ap1: 90, doku: 90, praes: 90, ga1: 25, ga2: 80, wiso: 80 }).passed) fail("Notenrechner: ungenügend muss durchfallen");
 }
 
+// Quiz: jede Frage braucht gültige Optionen und eine gültige richtige Antwort
+(A.QUIZ_ALL || []).forEach(q => { if (!q.q || !Array.isArray(q.o) || q.o.length < 2 || !q.c.length || q.c.some(i => i < 0 || i >= q.o.length) || !q.e) fail("Quizfrage fehlerhaft:", q.k); });
+if (!A.QUIZ_ALL || A.QUIZ_ALL.length < 60) fail("Quiz: zu wenige Fragen", A.QUIZ_ALL && A.QUIZ_ALL.length);
+
+// Probeprüfung: GA-Sätze mit 4 Aufgaben und ~100 Punkten, WiSo mit 30 Fragen
+if (A._exam) {
+  for (const part of ["GA1", "GA2"]) for (let i = 0; i < 50; i++) {
+    const e = A._exam.buildGA(part), sum = e.items.reduce((a, b) => a + b.max, 0);
+    if (e.tasks.length !== 4 || e.tasks.some(t => !t.length) || sum < 90 || sum > 110 || e.items.some(it => !it.q && !it.task)) fail("Probeprüfung", part, "Punkte", sum);
+    if (e.items.some(it => it.type === "calc" && AP2GEN(it.gen) !== part)) fail("Probeprüfung: Rechenaufgabe aus falschem Teil", part);
+  }
+  if (A._exam.buildWiSo().qs.length !== 30) fail("Probeprüfung WiSo: nicht 30 Fragen");
+} else fail("Probeprüfung fehlt");
+function AP2GEN(g) { return A.GEN[g] && A.GEN[g].part; }
+
+// Prüfungsbereitschaft muss eine Zahl von 0 bis 100 liefern
+if (A.readiness) { const r = A.readiness(); if (!(r.pct >= 0 && r.pct <= 100) || r.parts.length !== 5) fail("Prüfungsbereitschaft", r.pct); } else fail("Prüfungsbereitschaft fehlt");
+
 // GitHub Pages: index.html muss zum aktuellen ap2.html passen
 const pages = require("child_process").spawnSync(process.execPath, [path.join(dir, "tools", "build-pages.js"), "--check"], { encoding: "utf8" });
 if (pages.status !== 0) fail((pages.stdout || pages.stderr || "").trim() || "index.html veraltet");
 
-console.log(`Geprüft: ${scripts.length} Skripte, ${Object.keys(A.GEN || {}).length} Rechenaufgaben, ${ids.length} Lektionen, ${(A.CARDS || []).length} Lernkarten, ${(A.QUIZ || []).length} Quizfragen.`);
+console.log(`Geprüft: ${scripts.length} Skripte, ${Object.keys(A.GEN || {}).length} Rechenaufgaben, ${ids.length} Lektionen, ${(A.CARDS || []).length} Lernkarten, ${(A.QUIZ_ALL || A.QUIZ || []).length} Quizfragen.`);
 console.log(problems ? `${problems} Probleme gefunden.` : "0 Probleme – alles in Ordnung.");
 process.exit(problems ? 1 : 0);

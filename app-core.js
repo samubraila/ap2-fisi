@@ -6,7 +6,7 @@
 
   // ---------- Speicher: eigenes Konto (db, privat) oder Browser ----------
   const KEY = "ap2-lernzentrale-v1";
-  const defaults = () => ({ examDate: "", cards: {}, checks: {}, trainer: { ok: 0, total: 0 }, quiz: {}, updatedAt: 0 });
+  const defaults = () => ({ examDate: "", cards: {}, checks: {}, trainer: { ok: 0, total: 0, byType: {} }, quiz: {}, days: {}, exams: [], updatedAt: 0 });
   let state = defaults();
   try { const raw = localStorage.getItem(KEY); if (raw) state = Object.assign(defaults(), JSON.parse(raw)); } catch (e) {}
   AP2.state = () => state;
@@ -22,6 +22,9 @@
     writing = false;
     if (again) { again = false; flush(); }
   }
+  // Lernaktivität pro Tag (für Lernserie, Kalender, Tagesziel)
+  AP2.dayKey = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  AP2.track = function (n = 1) { state.days = state.days || {}; const k = AP2.dayKey(new Date()); state.days[k] = (state.days[k] || 0) + n; };
   AP2.save = function () {
     state.updatedAt = Date.now();
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}

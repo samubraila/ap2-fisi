@@ -50,7 +50,9 @@
     task.fields.forEach((f, i) => $("#tf" + i, el).addEventListener("input", e => { f.v = e.target.value; }));
     $("#t-check", el).addEventListener("click", () => {
       results = task.fields.map(f => check(f, f.v || ""));
-      if (!counted) { const s = AP2.state(); s.trainer.total++; if (results.every(Boolean)) s.trainer.ok++; counted = true; AP2.save(); }
+      if (!counted) { const s = AP2.state(), allOk = results.every(Boolean); s.trainer.total++; if (allOk) s.trainer.ok++;
+        s.trainer.byType = s.trainer.byType || {}; const b = s.trainer.byType[genId] || { ok: 0, total: 0 }; s.trainer.byType[genId] = { ok: b.ok + (allOk ? 1 : 0), total: b.total + 1 };
+        counted = true; AP2.track(); AP2.save(); }
       viewTrainer(el);
     });
     $("#t-step", el).addEventListener("click", () => { shown = Math.min(n, shown + 1); viewTrainer(el); });

@@ -8,7 +8,7 @@
   AP2.ALL = TOPICS;
   const st = () => AP2.state();
   const prog = id => { const s = st(); s.lessons = s.lessons || {}; return s.lessons[id] || {}; };
-  const setProg = (id, k) => { const s = st(); s.lessons = s.lessons || {}; s.lessons[id] = Object.assign({}, s.lessons[id], { [k]: true }); AP2.save(); };
+  const setProg = (id, k) => { const s = st(); s.lessons = s.lessons || {}; s.lessons[id] = Object.assign({}, s.lessons[id], { [k]: true }); AP2.track(); AP2.save(); };
   const status = id => st().checks[id] ? "done" : (() => { const p = prog(id); return p.read || p.cards || p.quiz ? "started" : "open"; })();
   const STATUS = { done: ["chip low", "fertig"], started: ["chip mid", "angefangen"], open: ["chip", "offen"] };
   const timeOf = id => (LS[id] && LS[id].time) || 30;
@@ -67,7 +67,7 @@
         <div class="row"><button type="button" class="btn ${done ? "good" : "primary"}" id="l-done">${done ? "✓ Thema abgeschlossen" : "Thema abschließen"}</button>
           ${nxt ? `<a class="btn" href="#t-${nxt.id}">Weiter mit: ${esc(nxt.name)} →</a>` : ""}</div></section>`;
     $("#l-read", el).addEventListener("click", () => { setProg(id, "read"); viewLesson(el); $("#l-cards-sec", el).scrollIntoView({ behavior: "smooth", block: "start" }); });
-    const rate = ok => { const s = st(), cid = "c" + c.i, cur = s.cards[cid] || { box: 1 }; s.cards[cid] = { box: ok ? Math.min(5, (cur.box || 1) + 1) : 1 }; deckIdx++; deckShow = false; if (deckIdx >= deck.length) setProg(id, "cards"); else AP2.save(); viewLesson(el); };
+    const rate = ok => { const s = st(), cid = "c" + c.i, cur = s.cards[cid] || { box: 1 }; s.cards[cid] = { box: ok ? Math.min(5, (cur.box || 1) + 1) : 1 }; deckIdx++; deckShow = false; if (deckIdx >= deck.length) setProg(id, "cards"); else { AP2.track(); AP2.save(); } viewLesson(el); };
     if ($("#l-show", el)) $("#l-show", el).addEventListener("click", () => { deckShow = true; viewLesson(el); });
     if ($("#l-yes", el)) { $("#l-yes", el).addEventListener("click", () => rate(true)); $("#l-no", el).addEventListener("click", () => rate(false)); }
     if ($("#l-again", el)) $("#l-again", el).addEventListener("click", () => { deckIdx = 0; deckShow = false; viewLesson(el); });
