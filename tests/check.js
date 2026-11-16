@@ -53,6 +53,10 @@ if (A.evalAll) {
   if (A.evalAll({ ap1: 90, doku: 90, praes: 90, ga1: 25, ga2: 80, wiso: 80 }).passed) fail("Notenrechner: ungenügend muss durchfallen");
 }
 
+// GitHub Pages: index.html muss zum aktuellen ap2.html passen
+const pages = require("child_process").spawnSync(process.execPath, [path.join(dir, "tools", "build-pages.js"), "--check"], { encoding: "utf8" });
+if (pages.status !== 0) fail((pages.stdout || pages.stderr || "").trim() || "index.html veraltet");
+
 console.log(`Geprüft: ${scripts.length} Skripte, ${Object.keys(A.GEN || {}).length} Rechenaufgaben, ${ids.length} Lektionen, ${(A.CARDS || []).length} Lernkarten, ${(A.QUIZ || []).length} Quizfragen.`);
 console.log(problems ? `${problems} Probleme gefunden.` : "0 Probleme – alles in Ordnung.");
 process.exit(problems ? 1 : 0);

@@ -2,6 +2,8 @@
 
 Lern-App für die **IHK-Abschlussprüfung Teil 2 – Fachinformatiker Systemintegration (AO 2020)**, ausgewertet aus zehn Prüfungsterminen (Winter 2021/22 bis Sommer 2026).
 
+**Online öffnen:** https://samubraila.github.io/ap2-fisi/
+
 ## Funktionen
 
 - **Lernplan** Tag für Tag bis zum Prüfungstermin, jedes Thema mit „Starten“-Knopf
@@ -14,11 +16,14 @@ Lern-App für die **IHK-Abschlussprüfung Teil 2 – Fachinformatiker Systeminte
 
 ## Starten
 
-Die App läuft als Claude-Artifact. Lokal: `ap2.html` braucht das Gerüst des Artifact-Hosts; zum Testen der Logik ohne Browser:
+Die App läuft auf GitHub Pages (Link oben) und als Claude-Artifact. `index.html` wird aus `ap2.html` erzeugt:
 
 ```
-node tests/check.js
+node tools/build-pages.js   # index.html neu bauen
+node tests/check.js         # Logik, Lektionen und index.html prüfen
 ```
+
+Lokal einfach `index.html` im Browser öffnen. Der Lernfortschritt wird im Browser gespeichert.
 
 ## Hinweis
 
